@@ -14,7 +14,6 @@ import { Icon } from "@rneui/base";
 import { Picker } from "@react-native-picker/picker";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ModalAdd = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,11 +37,6 @@ const ModalAdd = () => {
       base64: false,
     });
 
-    // console.log(result);
-    // if (!canceled) {
-    //   setImg(result.assets[0]);
-    //   console.log(result.assets[0]);
-    // }
     if (!result.canceled) {
       setImg(result.assets[0]);
     }
@@ -50,14 +44,12 @@ const ModalAdd = () => {
 
   // addingData();
 
-  const saveSiswa = () => {
+  const saveSiswa = async () => {
+    const fileName = img.uri.split("/").pop();
+    const fileType = fileName.split(".").pop();
     if (!img) {
       alert("Image Harus di Upload");
     } else {
-      const filename = img.uri.substring(
-        img.uri.lastIndexOf("/") + 1,
-        img.uri.length
-      );
       const formData = new FormData();
       formData.append("nama", nama);
       formData.append("tahun", tahun);
@@ -65,25 +57,26 @@ const ModalAdd = () => {
       formData.append("quotes", quote);
       formData.append("file", {
         uri: img.uri,
-        name: filename,
-        type: img.type,
+        name: fileName,
+        type: fileType,
       });
-      axios
-        .post("http://192.168.100.118/siswa", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          if (response.status == 200) {
-            alert("siswa berhasil dibuat");
-          } else {
-            console.log(response);
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      try {
+        await axios
+          .post("http://192.168.43.197:5000/siswa", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            if (response.status == 200) {
+              alert("siswa berhasil dibuat");
+            } else {
+              console.log(response);
+            }
+          });
+      } catch (err) {
+        console.log(err.message);
+      }
     }
   };
   return (

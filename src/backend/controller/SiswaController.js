@@ -1,7 +1,7 @@
 import Siswa from "../models/Siswamodel.js";
 import User from "../models/Usermodel.js";
 
-const baseUrl = `192.168.100.118`;
+const baseUrl = `192.168.43.197`;
 
 export const getUser = async (req, res) => {
   try {
@@ -34,27 +34,27 @@ export const getSiswaById = async (req, res) => {
 };
 
 export const saveSiswa = async (req, res) => {
-  if (req.files === null)
-    return res.status(400).json({ msg: "No image uploaded" });
   const { nama, tahun, instagram, quotes } = req.body;
 
   const image = req.file.path.replace(/\\/g, "/");
-  console.log(image);
+  const url = `http://${baseUrl}:5000/${image}`;
 
-  const url = `http://192.168.100.118/${image}`;
-
-  try {
-    await Siswa.create({
-      nama: nama,
-      tahun: tahun,
-      instagram: instagram,
-      quotes: quotes,
-      gambar: image,
-      url: url,
-    });
-    res.status(201).json({ msg: "data is inserted" });
-  } catch (error) {
-    console.log(error.message);
+  if (!req.file) {
+    res.status(422).json({ msg: "masukkan gambar" });
+  } else {
+    try {
+      await Siswa.create({
+        nama: nama,
+        tahun: tahun,
+        instagram: instagram,
+        quotes: quotes,
+        gambar: image,
+        url: url,
+      });
+      res.status(201).json({ msg: "data is inserted" });
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 };
 

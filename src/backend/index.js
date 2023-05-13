@@ -8,8 +8,6 @@ import multer from "multer";
 
 const app = express();
 
-app.use(cors());
-
 const __fileName = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__fileName);
@@ -39,12 +37,12 @@ const fileFilter = (req, file, cb) => {
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single("file")
 );
-app.use("public/gambar", express.static(path.join(__dirname, "public/gambar")));
-// app.use(express.static("public"));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 
-// app.use(express.static("public"));
+app.use(cors({ credentials: true, origin: "http://192.168.43.197:5000" }));
+
 app.use(UserRoute);
 app.use(SiswaRoute);
 
