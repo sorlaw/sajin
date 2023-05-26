@@ -8,6 +8,8 @@ import multer from "multer";
 
 const app = express();
 
+app.use(cors());
+
 const __fileName = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__fileName);
@@ -41,7 +43,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use(express.json());
 
-app.use(cors({ credentials: true, origin: "http://192.168.43.197:5000" }));
+// app.use(cors({ credentials: true, origin: `http://192.168.100.118:5000` }));
 
 app.use(UserRoute);
 app.use(SiswaRoute);

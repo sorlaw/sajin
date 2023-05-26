@@ -1,16 +1,6 @@
 import Siswa from "../models/Siswamodel.js";
-import User from "../models/Usermodel.js";
 
-const baseUrl = `192.168.43.197`;
-
-export const getUser = async (req, res) => {
-  try {
-    const response = await User.findAll();
-    res.json(response);
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+const baseUrl = `192.168.100.118`;
 
 export const getSiswa = async (req, res) => {
   try {
@@ -66,41 +56,9 @@ export const updateSiswa = async (req, res) => {
   });
   if (!siswa) return res.status(404).json({ msg: "not found" });
   let fileName = "";
-  if (req.files === null) {
+  if (req.file == null) {
     fileName = Siswa.gambar;
   } else {
-    const file = req.files.file;
-    const fileSize = file.data.length;
-    const ext = path.extname(file.name);
-    fileName = file.md5 + ext;
-    const allowedType = [".png", ".jpg", ".jpeg"];
-
-    if (!allowedType.includes(ext.toLowerCase()))
-      return res.status(422).json({ msg: "Invalid gambar" });
-    if (fileSize > 1000000)
-      return res.status(422).json({ msg: "gambar harus kurang dari 1mb" });
-
-    const filepath = `./public/gambar/${siswa.gambar}`;
-    fs.unlinkSync(filepath);
-
-    file.mv(`./public/gambar/${fileName}`, (err) => {
-      if (err) return res.status(500).json({ msg: err.message });
-    });
-  }
-  const { nama, tahun, instagram, quotes } = req.body;
-  const url = `${req.protocol}://${baseUrl}:5000/gambar/${fileName}`;
-  try {
-    await Siswa.update(
-      { nama, tahun, instagram, quotes, gambar: fileName, url },
-      {
-        where: {
-          id: req.params.id,
-        },
-      }
-    );
-    res.status(200).json({ msg: "data updated" });
-  } catch (error) {
-    console.log(error.message);
   }
 };
 
@@ -112,8 +70,8 @@ export const deleteSiswa = async (req, res) => {
   });
   if (!siswa) return res.status(404).json({ msg: "not found" });
   try {
-    const filepath = `./public/gambar/${siswa.gambar}`;
-    fs.unlinkSync(filepath);
+    // const filepath = `./public/gambar/${siswa.gambar}`;
+    // FileSystem.deleteAsync(filepath);
     await Siswa.destroy({
       where: {
         id: req.params.id,

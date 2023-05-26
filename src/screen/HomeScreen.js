@@ -2,11 +2,17 @@ import { View, Text, Image, TextInput, Pressable, Linking } from "react-native";
 import React, { useState, useEffect } from "react";
 import styles from "../style/style.js";
 import axios from "axios";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { Button } from "@rneui/base";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HomeScreen = ({ navigation }) => {
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem("level", value);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [data, setData] = useState(null);
@@ -17,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
   const loginCheck = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.43.197:5000/api/data/user"
+        "http://192.168.100.118:5000/api/data/user"
       );
       setData(response.data);
     } catch (err) {
@@ -30,6 +36,7 @@ const HomeScreen = ({ navigation }) => {
 
     for (const d of data) {
       if (d.username == username && d.password == password) {
+        storeData(d.level);
         navigation.navigate("Details");
       }
     }

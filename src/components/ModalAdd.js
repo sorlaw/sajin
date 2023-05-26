@@ -18,7 +18,7 @@ import axios from "axios";
 const ModalAdd = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [nama, setNama] = useState("");
-  const [tahun, setTahun] = useState(2020);
+  const [tahun, setTahun] = useState("2020");
   const [quote, setQuote] = useState("");
   const [instagram, setInstagram] = useState("");
   const [img, setImg] = useState(null);
@@ -44,13 +44,13 @@ const ModalAdd = () => {
 
   // addingData();
 
-  const saveSiswa = async () => {
+  const saveSiswa = () => {
     const fileName = img.uri.split("/").pop();
     const fileType = fileName.split(".").pop();
+    const formData = new FormData();
     if (!img) {
       alert("Image Harus di Upload");
     } else {
-      const formData = new FormData();
       formData.append("nama", nama);
       formData.append("tahun", tahun);
       formData.append("instagram", instagram);
@@ -58,26 +58,22 @@ const ModalAdd = () => {
       formData.append("file", {
         uri: img.uri,
         name: fileName,
-        type: fileType,
+        type: "image/" + fileType,
       });
-      try {
-        await axios
-          .post("http://192.168.43.197:5000/siswa", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((response) => {
-            if (response.status == 200) {
-              alert("siswa berhasil dibuat");
-            } else {
-              console.log(response);
-            }
-          });
-      } catch (err) {
-        console.log(err.message);
-      }
     }
+    fetch("http://192.168.100.118:5000/siswa", {
+      method: "POST",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      body: formData,
+    });
+    alert("data telah dimasukkan");
+    setImg(null);
+    setNama("");
+    setTahun("");
+    setInstagram("");
+    setQuote("");
   };
   return (
     <View>
@@ -114,8 +110,8 @@ const ModalAdd = () => {
                 onValueChange={(itemValue, itemIndex) => setTahun(itemValue)}
                 style={{ width: 120, height: 50 }}
               >
-                <Picker.Item label="2020" value="java" />
-                <Picker.Item label="2021" value="script" />
+                <Picker.Item label="2020" value="2020" />
+                <Picker.Item label="2021" value="2021" />
               </Picker>
               <Text style={styles.modalText}>Masukkan Instagram</Text>
               <TextInput

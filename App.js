@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./src/screen/HomeScreen";
 import SecondaryScreen from "./src/screen/SecondaryScreen";
 import ListItem from "./src/screen/ListItem";
+import DetailScreen from "./src/screen/DetailScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,11 @@ export default function App() {
         <Stack.Screen
           name="ListItem"
           component={ListItem}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailScreen"
+          component={DetailScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
