@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
   const loginCheck = async () => {
     try {
       const response = await axios.get(
-        "http://192.168.100.118:5000/api/data/user"
+        "http://192.168.43.197:5000/api/data/user"
       );
       setData(response.data);
     } catch (err) {

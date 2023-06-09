@@ -39,7 +39,7 @@ const ListItem = ({ navigation }) => {
 
   const getSiswa = async () => {
     try {
-      const response = await axios.get("http://192.168.100.118:5000/siswa");
+      const response = await axios.get("http://192.168.43.197:5000/siswa");
       setSiswa(response.data);
     } catch (err) {
       console.log(err);

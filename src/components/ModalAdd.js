@@ -22,7 +22,6 @@ const ModalAdd = () => {
   const [quote, setQuote] = useState("");
   const [instagram, setInstagram] = useState("");
   const [img, setImg] = useState(null);
-  const [file, setFile] = useState("");
 
   useEffect(() => {}, []);
 
@@ -61,7 +60,7 @@ const ModalAdd = () => {
         type: "image/" + fileType,
       });
     }
-    fetch("http://192.168.100.118:5000/siswa", {
+    fetch("http://192.168.43.197:5000/siswa", {
       method: "POST",
       headers: {
         "Content-Type": "multipart/form-data",

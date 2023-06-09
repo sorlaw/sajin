@@ -1,6 +1,6 @@
 import Siswa from "../models/Siswamodel.js";
-
-const baseUrl = `192.168.100.118`;
+import { Sequelize } from "sequelize";
+const baseUrl = `192.168.43.197`;
 
 export const getSiswa = async (req, res) => {
   try {
@@ -15,6 +15,18 @@ export const getSiswaById = async (req, res) => {
     const response = await Siswa.findOne({
       where: {
         id: req.params.id,
+      },
+    });
+    res.json(response);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+export const getSiswaByName = async (req, res) => {
+  try {
+    const response = await Siswa.findOne({
+      where: {
+        nama: req.params.name,
       },
     });
     res.json(response);

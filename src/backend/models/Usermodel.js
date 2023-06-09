@@ -13,6 +13,7 @@ const User = db.define(
     },
     username: DataTypes.STRING,
     password: DataTypes.STRING,
+    level: DataTypes.ENUM("0", "1"),
   },
   {
     freezeTableName: true,
